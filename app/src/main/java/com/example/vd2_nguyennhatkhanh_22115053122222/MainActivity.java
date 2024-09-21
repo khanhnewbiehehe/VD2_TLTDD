@@ -14,6 +14,18 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean isPrime(int num) {
+        if (num < 2) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +82,36 @@ public class MainActivity extends AppCompatActivity {
                 float num_2 = Integer.parseInt(secondNum.getText().toString());
                 float result;
                 if(num_2 == 0) {
-                    txtDisplay.setText("Không thể chia cho 0");
+                    txtDisplay.setText("can't divide by 0");
                 }else{
                     result = num_1 / num_2;
                     txtDisplay.setText(String.valueOf(result));
                 }
             }
         });
+
+        EditText numberToCheck = findViewById(R.id.etxtNumberToCheck);
+        Button btnCheck = findViewById(R.id.btnCheck);
+
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int num;
+                try {
+                    num = Integer.parseInt(numberToCheck.getText().toString());
+                } catch (NumberFormatException e) {
+                    numberToCheck.setText("Invalid input");
+                    return;
+                }
+
+                if (isPrime(num)) {
+                    numberToCheck.setText(num + " is a prime number");
+                } else {
+                    numberToCheck.setText(num + " is not a prime number");
+                }
+            }
+        });
+
 
     }
 }
